@@ -1,0 +1,13 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: bike-service
+  cloud:
+    config:
+      enabled: false
+  jpa:
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true

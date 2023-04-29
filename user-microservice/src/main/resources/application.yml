@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: user-service
+  cloud:
+    config:
+      enabled: false
+  jpa:
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
