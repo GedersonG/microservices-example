@@ -12,4 +12,5 @@ import lombok.Setter;
 public class Bike {
     private String brand;
     private String model;
+    private Long userId;
 }

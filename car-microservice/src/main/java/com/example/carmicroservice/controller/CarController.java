@@ -23,13 +23,13 @@ public class CarController {
 
     private final ICarService carService;
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Void> saveCar(@RequestBody CarDto carDto){
         carService.saveCar(carDto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Car>> getAllCars(){
         return ResponseEntity.ok(carService.getAllCars());
     }

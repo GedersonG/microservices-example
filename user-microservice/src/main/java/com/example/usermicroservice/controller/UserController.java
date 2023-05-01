@@ -1,5 +1,6 @@
 package com.example.usermicroservice.controller;
 
+import com.example.usermicroservice.dto.CarDto;
 import com.example.usermicroservice.dto.UserDto;
 import com.example.usermicroservice.entity.User;
 import com.example.usermicroservice.model.Bike;
@@ -49,5 +50,11 @@ public class UserController {
     @GetMapping("/bikes/{userid}")
     public ResponseEntity<List<Bike>> getBikesByUserId(@PathVariable("userid") Long userId){
         return ResponseEntity.ok(userService.getBikesByUserId(userId));
+    }
+
+    @PostMapping("/savecar")
+    public ResponseEntity<Void> saveCar(@RequestBody CarDto carDto){
+        userService.saveCar(carDto);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }

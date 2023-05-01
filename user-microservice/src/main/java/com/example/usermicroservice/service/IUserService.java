@@ -1,5 +1,6 @@
 package com.example.usermicroservice.service;
 
+import com.example.usermicroservice.dto.CarDto;
 import com.example.usermicroservice.dto.UserDto;
 import com.example.usermicroservice.entity.User;
 import com.example.usermicroservice.model.Bike;
@@ -14,4 +15,5 @@ public interface IUserService {
     List<Car> getCarsByUserId(Long userId);
     List<Bike> getBikesByUserId(Long userId);
     void userExistById(Long userId);
+    void saveCar(CarDto carDto);
 }

@@ -1,9 +1,12 @@
 package com.example.usermicroservice.serviceImp;
 
+import com.example.usermicroservice.clients.ICarFeignClient;
+import com.example.usermicroservice.dto.CarDto;
 import com.example.usermicroservice.dto.UserDto;
 import com.example.usermicroservice.entity.User;
 import com.example.usermicroservice.exception.NoDataFoundException;
 import com.example.usermicroservice.exception.UserDoesNotExistException;
+import com.example.usermicroservice.mapper.ICarMapper;
 import com.example.usermicroservice.mapper.IUserMapper;
 import com.example.usermicroservice.model.Bike;
 import com.example.usermicroservice.model.Car;
@@ -24,6 +27,8 @@ public class UserServiceImpl implements IUserService {
     private final IUserRepository userRepository;
     private final IUserMapper userMapper;
     private final RestTemplate restTemplate;
+    private final ICarMapper carMapper;
+    private final ICarFeignClient carFeignClient;
     @Override
     public void saveUser(UserDto userDto) {
         User user = userMapper.toUserEntity(userDto);
@@ -65,5 +70,11 @@ public class UserServiceImpl implements IUserService {
     public void userExistById(Long userId) {
         if(!userRepository.existsById(userId))
             throw new UserDoesNotExistException();
+    }
+
+    @Override
+    public void saveCar(CarDto carDto) {
+        Car car = carMapper.toCarModel(carDto);
+        carFeignClient.save(car);
     }
 }
