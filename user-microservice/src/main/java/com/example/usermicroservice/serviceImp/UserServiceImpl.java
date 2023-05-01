@@ -3,12 +3,16 @@ package com.example.usermicroservice.serviceImp;
 import com.example.usermicroservice.dto.UserDto;
 import com.example.usermicroservice.entity.User;
 import com.example.usermicroservice.exception.NoDataFoundException;
+import com.example.usermicroservice.exception.UserDoesNotExistException;
 import com.example.usermicroservice.mapper.IUserMapper;
+import com.example.usermicroservice.model.Bike;
+import com.example.usermicroservice.model.Car;
 import com.example.usermicroservice.repository.IUserRepository;
 import com.example.usermicroservice.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -19,6 +23,7 @@ public class UserServiceImpl implements IUserService {
 
     private final IUserRepository userRepository;
     private final IUserMapper userMapper;
+    private final RestTemplate restTemplate;
     @Override
     public void saveUser(UserDto userDto) {
         User user = userMapper.toUserEntity(userDto);
@@ -34,8 +39,31 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User getUserById(Long id) {
-        if(userRepository.findById(id).isPresent())
-            return userRepository.findById(id).get();
-        throw new NoDataFoundException();
+        userExistById(id);
+        return userRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Car> getCarsByUserId(Long userId) {
+        userExistById(userId);
+        List<Car> cars = restTemplate.getForObject("http://localhost:8082/car/user/" + userId, List.class);
+        if(cars.isEmpty())
+            throw new NoDataFoundException();
+        return cars;
+    }
+
+    @Override
+    public List<Bike> getBikesByUserId(Long userId) {
+        userExistById(userId);
+        List<Bike> bikes = restTemplate.getForObject("http://localhost:8083/bike/user/" + userId, List.class);
+        if(bikes.isEmpty())
+            throw new NoDataFoundException();
+        return bikes;
+    }
+
+    @Override
+    public void userExistById(Long userId) {
+        if(!userRepository.existsById(userId))
+            throw new UserDoesNotExistException();
     }
 }

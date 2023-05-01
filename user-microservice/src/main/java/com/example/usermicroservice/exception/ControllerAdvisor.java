@@ -18,4 +18,11 @@ public class ControllerAdvisor {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NO_DATA_FOUND.getMessage()));
     }
+
+    @ExceptionHandler(UserDoesNotExistException.class)
+    public ResponseEntity<Map<String,String>> handleUserDoesNotExistException(
+            UserDoesNotExistException ignoreUserDoesNotExistException){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.USER_DOES_NOT_EXIST.getMessage()));
+    }
 }
