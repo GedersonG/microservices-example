@@ -1,12 +1,10 @@
-server:
-  port: 8082
-
 spring:
   application:
-    name: car-service
+    name: user-service
   cloud:
     config:
-      enabled: false
+      enabled: true
+      uri: http://localhost:8080
   jpa:
     properties:
       hibernate:

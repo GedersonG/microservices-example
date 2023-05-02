@@ -6,7 +6,8 @@ spring:
     name: bike-service
   cloud:
     config:
-      enabled: false
+      enabled: true
+      uri: http://localhost:8080
   jpa:
     properties:
       hibernate:
