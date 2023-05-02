@@ -22,13 +22,13 @@ public class BikeController {
 
     private final IBikeService bikeService;
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Void> saveBike(@RequestBody BikeDto bikeDto){
         bikeService.saveBike(bikeDto);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<Bike>> getAllBikes(){
         return ResponseEntity.ok(bikeService.getAllBikes());
     }

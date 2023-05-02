@@ -1,11 +1,15 @@
 package com.example.usermicroservice.serviceImp;
 
+import com.example.usermicroservice.clients.IBikeFeignClient;
 import com.example.usermicroservice.clients.ICarFeignClient;
+import com.example.usermicroservice.dto.BikeDto;
 import com.example.usermicroservice.dto.CarDto;
 import com.example.usermicroservice.dto.UserDto;
+import com.example.usermicroservice.dto.VehiclesDto;
 import com.example.usermicroservice.entity.User;
 import com.example.usermicroservice.exception.NoDataFoundException;
 import com.example.usermicroservice.exception.UserDoesNotExistException;
+import com.example.usermicroservice.mapper.IBikeMapper;
 import com.example.usermicroservice.mapper.ICarMapper;
 import com.example.usermicroservice.mapper.IUserMapper;
 import com.example.usermicroservice.model.Bike;
@@ -18,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -26,9 +31,11 @@ public class UserServiceImpl implements IUserService {
 
     private final IUserRepository userRepository;
     private final IUserMapper userMapper;
-    private final RestTemplate restTemplate;
     private final ICarMapper carMapper;
+    private final IBikeMapper bikeMapper;
+    private final RestTemplate restTemplate;
     private final ICarFeignClient carFeignClient;
+    private final IBikeFeignClient bikeFeignClient;
     @Override
     public void saveUser(UserDto userDto) {
         User user = userMapper.toUserEntity(userDto);
@@ -75,6 +82,21 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void saveCar(CarDto carDto) {
         Car car = carMapper.toCarModel(carDto);
-        carFeignClient.save(car);
+        carFeignClient.saveCar(car);
+    }
+
+    @Override
+    public void saveBike(BikeDto bikeDto) {
+        Bike bike = bikeMapper.toBikeModel(bikeDto);
+        bikeFeignClient.saveBike(bike);
+    }
+
+    @Override
+    public VehiclesDto getVehiclesByUserId(Long userId) {
+        // Method get all vehicles (list bikes, cars)
+        userExistById(userId);
+        List<Car> cars = carFeignClient.carsListByUserId(userId);
+        List<Bike> bikes = bikeFeignClient.bikesListByUserId(userId);
+        return new VehiclesDto(cars,bikes);
     }
 }

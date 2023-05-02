@@ -1,6 +1,6 @@
 package com.example.usermicroservice.clients;
 
-import com.example.usermicroservice.model.Car;
+import com.example.usermicroservice.model.Bike;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "car-service", url="http://localhost:8082/car")
-public interface ICarFeignClient {
+@FeignClient(name = "bike-service", url="http://localhost:8083/bike")
+public interface IBikeFeignClient {
     @PostMapping
-    void saveCar (@RequestBody Car car);
+    void saveBike (@RequestBody Bike bike);
 
     @GetMapping("/user/{userid}")
-    List<Car> carsListByUserId (@PathVariable("userid") Long userId);
+    List<Bike> bikesListByUserId (@PathVariable("userid") Long userId);
 }

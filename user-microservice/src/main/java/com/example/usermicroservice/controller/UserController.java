@@ -1,7 +1,9 @@
 package com.example.usermicroservice.controller;
 
+import com.example.usermicroservice.dto.BikeDto;
 import com.example.usermicroservice.dto.CarDto;
 import com.example.usermicroservice.dto.UserDto;
+import com.example.usermicroservice.dto.VehiclesDto;
 import com.example.usermicroservice.entity.User;
 import com.example.usermicroservice.model.Bike;
 import com.example.usermicroservice.model.Car;
@@ -26,13 +28,13 @@ public class UserController {
 
     private final IUserService userService;
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Void> saveUser(@RequestBody UserDto userDto){
         userService.saveUser(userDto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
     }
@@ -55,6 +57,17 @@ public class UserController {
     @PostMapping("/savecar")
     public ResponseEntity<Void> saveCar(@RequestBody CarDto carDto){
         userService.saveCar(carDto);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/savebike")
+    public ResponseEntity<Void> saveBike(@RequestBody BikeDto bikeDto){
+        userService.saveBike(bikeDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/vehicles/{userid}")
+    public ResponseEntity<VehiclesDto> getAllVehiclesByUserId(@PathVariable("userid") Long userId){
+        return ResponseEntity.ok(userService.getVehiclesByUserId(userId));
     }
 }
