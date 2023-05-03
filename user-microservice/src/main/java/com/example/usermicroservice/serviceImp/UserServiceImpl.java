@@ -58,7 +58,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<Car> getCarsByUserId(Long userId) {
         userExistById(userId);
-        List<Car> cars = restTemplate.getForObject("http://localhost:8082/car/user/" + userId, List.class);
+        List<Car> cars = restTemplate.getForObject("http://car-microservice:8082/car/user/" + userId, List.class);
         if(cars.isEmpty())
             throw new NoDataFoundException();
         return cars;
@@ -67,7 +67,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<Bike> getBikesByUserId(Long userId) {
         userExistById(userId);
-        List<Bike> bikes = restTemplate.getForObject("http://localhost:8083/bike/user/" + userId, List.class);
+        List<Bike> bikes = restTemplate.getForObject("http://bike-microservice:8083/bike/user/" + userId, List.class);
         if(bikes.isEmpty())
             throw new NoDataFoundException();
         return bikes;
